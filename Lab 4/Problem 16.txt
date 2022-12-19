@@ -1,0 +1,29 @@
+module Main (main) where
+
+main::IO() 
+main = do putStr (show (dropEvery [1,2,3,4,5,6,7,8,9,0] 3))
+          putStr (show (dropEvery ["a","b","c","d","f","g","h","i"] 3))
+map' :: (a -> b) -> [a] -> [b]
+map' _ [] = []
+map' f (x:xs) = f x : map' f xs
+
+cycle' :: [a] -> [a]
+cycle' xs  = xs' where xs' = xs ++ xs'
+
+fst' (a,b)  = a
+
+snd' (a,b)  = b
+
+filter' :: (a -> Bool) -> [a] -> [a]
+filter' _ [] = []
+filter' p (x:xs)
+  | p x       = x : filter' p xs
+  | otherwise = filter' p xs
+
+zip' :: [a] -> [b] -> [(a,b)]
+zip' _ [] = []
+zip' [] _ = []
+zip' (x:xs) (y:ys) = (x,y):zip' xs ys
+
+dropEvery :: [a] -> Int -> [a]
+dropEvery x n = map' fst' $ filter' ((n/=) . snd') $ zip' x (cycle' [1..n])
